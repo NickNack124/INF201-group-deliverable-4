@@ -4,3 +4,5 @@ import pytest
 
 from deliverable_4_G4_2_answers.ipynb import Fraction
 
+class Fraction:
+    
