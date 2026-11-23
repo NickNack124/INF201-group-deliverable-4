@@ -4,29 +4,34 @@
 class Temperature:
     """A representation of temperature, as well as a unit-conversion tool"""
 
-    def __init__(self, value, unit) -> None:
+    def __init__(self, value: float | int, unit: str = "C") -> None:
         """
         Initialization of the class
         Args:
-            * value (>= absolute zero): The measure of temperature
-            * unit ("C" | "K" | "F"): The unit of measurement
+            * value (float | int): The measure of temperature
+            * unit (str in ["C", "K", "F"]): The unit of measurement = C
         """
+        # Case-standardizing the input variables
+        unit = str(unit).upper()
+        value = float(value)
+        # These will return ValueErrors on their own if the input is the wrong type
 
-        self.tol = 1e-9
         # Checking for illegal attribute combinations
         abs_zero = {
             "K": 0.00,
             "C": -273.15,
             "F": -459.67
         }
-        if unit.upper() in abs_zero.keys():
-            if value < abs_zero[unit.upper()]:
-                raise ValueError("Can't go below Absolute Zero")
+        if unit in abs_zero.keys():
+            if value < abs_zero[unit]:
+                raise ValueError(f"{value}°{unit} < {abs_zero[unit]}°{unit} (Absolute Zero)")
         else:
-            raise ValueError("Invalid unit")
+            raise ValueError(f"Unit must be 'K', 'C' or 'F'. Not {unit}")
 
+        # Assigning the input variables to self
         self._unit = unit
         self._value = value
+        self.tol = 1e-9
 
     # Primary methods
     def to_celsius(self) -> float:
@@ -64,57 +69,72 @@ class Temperature:
 
     def convert_to(self, target_unit: str) -> Temperature:
         """Converts from one temperature unit to another"""
-        if target_unit.upper() == "K":
+
+        target_unit = str(target_unit).upper()
+
+        if target_unit == "K":
             value = self.to_kelvin()
-        elif target_unit.upper() == "C":
+        elif target_unit == "C":
             value = self.to_celsius()
-        elif target_unit.upper() == "F":
-            value = self.to_fahrenheit
+        elif target_unit == "F":
+            value = self.to_fahrenheit()
         else:
             raise ValueError("Invalid unit")
         return Temperature(value, target_unit)
 
     # Logic
-    def __eq__(self, other: Temperature) -> bool:
+    def __eq__(self, other: Temperature) -> bool:           # type: ignore
         """How self == other behaves"""
+
         if not isinstance(other, Temperature):
             return NotImplemented
         other_value = other.convert_to(self._unit).value
+
         return abs(self._value - other_value) <= self.tol
 
-    def __ne__(self, other: Temperature) -> bool:
+    def __ne__(self, other: Temperature) -> bool:           # type: ignore
         """How self != other behaves"""
+
         if not isinstance(other, Temperature):
             return NotImplemented
         other_value = other.convert_to(self._unit).value
+
         return abs(self._value - other_value) > self.tol
 
     def __lt__(self, other: Temperature) -> bool:
         """How self < other behaves"""
+
         if not isinstance(other, Temperature):
             return NotImplemented
         other_value = other.convert_to(self._unit).value
+
         return self._value < (other_value - self.tol)
 
     def __le__(self, other: Temperature) -> bool:
         """How self <= other behaves"""
+
         if not isinstance(other, Temperature):
             return NotImplemented
         other_value = other.convert_to(self._unit).value
+
         return self._value <= (other_value + self.tol)
 
     def __gt__(self, other: Temperature) -> bool:
         """How self > other behaves"""
+
         if not isinstance(other, Temperature):
             return NotImplemented
         other_value = other.convert_to(self._unit).value
+
         return self._value > (other_value + self.tol)
 
     def __ge__(self, other: Temperature) -> bool:
         """How self >= other behaves"""
+
         if not isinstance(other, Temperature):
             return NotImplemented
         other_value = other.convert_to(self._unit).value
+
         return self._value >= (other_value - self.tol)
 
     # Representation
