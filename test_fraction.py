@@ -2,7 +2,7 @@
 
 #import pytest
 
-from deliverable_4_G4_2_answers.ipynb import Fraction
+#from deliverable_4_G4_2_answers.ipynb import Fraction
 
 class Fraction:
     def __init__(self, numerator, denominator=1):
