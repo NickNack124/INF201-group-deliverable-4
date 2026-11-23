@@ -1,3 +1,4 @@
+"""A module for the fraction class"""
 
 class Fraction:
     def __init__(self, numerator, denominator=1):
