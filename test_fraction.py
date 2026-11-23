@@ -1,11 +1,12 @@
 """A module for testing the Fraction class"""
 
-import pytest
+#import pytest
 
 from deliverable_4_G4_2_answers.ipynb import Fraction
 
 class Fraction:
     def __init__(self, numerator, denominator=1):
+        """Makes a fraction with the given numerator and denominator. The denominator must be a positive integer."""
         if not isinstance(numerator, int) or not isinstance(denominator, int):
             raise TypeError("Numerator and denominator must be integers.")
         if denominator <= 0:
