@@ -6,7 +6,8 @@ class Temperature:
 
     def __init__(self, value: float | int, unit: str = "C") -> None:
         """
-        Initialization of the class
+        The temperature class represents a temperature-value measure, 
+        with an associated unit of measurement.
         Args:
             * value (float | int): The measure of temperature
             * unit (str in ["C", "K", "F"]): The unit of measurement = C
@@ -17,6 +18,7 @@ class Temperature:
         # These will return ValueErrors on their own if the input is the wrong type
 
         # Checking for illegal attribute combinations
+        self.tol = 1e-9
         abs_zero = {
             "K": 0.00,
             "C": -273.15,
@@ -24,16 +26,18 @@ class Temperature:
         }
         if unit in abs_zero.keys():
             if value < abs_zero[unit]:
-                raise ValueError(f"{value}°{unit} < {abs_zero[unit]}°{unit} (Absolute Zero)")
+                if abs(value - abs_zero[unit]) <= self.tol:
+                    value = abs_zero[unit]
+                else:
+                    raise ValueError(f"{value}°{unit} < {abs_zero[unit]}°{unit} (Absolute Zero)")
         else:
             raise ValueError(f"Unit must be 'K', 'C' or 'F'. Not {unit}")
 
         # Assigning the input variables to self
         self._unit = unit
         self._value = value
-        self.tol = 1e-9
 
-    # Primary methods
+    # Conversion methods
     def to_celsius(self) -> float:
         """Conversion from Kelvin/Fahrenheit to Celsius"""
         conversion = {
@@ -82,8 +86,8 @@ class Temperature:
             raise ValueError("Invalid unit")
         return Temperature(value, target_unit)
 
-    # Logic
-    def __eq__(self, other: Temperature) -> bool:           # type: ignore
+    # Logic methods
+    def __eq__(self, other: object) -> bool:
         """How self == other behaves"""
 
         if not isinstance(other, Temperature):
@@ -92,7 +96,7 @@ class Temperature:
 
         return abs(self._value - other_value) <= self.tol
 
-    def __ne__(self, other: Temperature) -> bool:           # type: ignore
+    def __ne__(self, other: object) -> bool:
         """How self != other behaves"""
 
         if not isinstance(other, Temperature):
@@ -137,10 +141,10 @@ class Temperature:
 
         return self._value >= (other_value - self.tol)
 
-    # Representation
+    # Representation methods
     def __repr__(self) -> str:
         """A representation of the object when it is ran with no call"""
-        return f"Temperature({self._value:.2f}, '{self._unit}')"
+        return f"<Temperature({self._value:.2f}, '{self._unit}')>"
 
     def __str__(self) -> str:
         """A string representation of the object when it is in a string"""

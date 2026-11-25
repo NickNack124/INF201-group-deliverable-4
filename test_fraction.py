@@ -1,7 +1,6 @@
 """A module for testing the Fraction class"""
 
 import pytest
-
 from fraction import Fraction
 
 
@@ -31,22 +30,19 @@ def test_subtraction():
     assert Fraction(5, 6) - Fraction(1, 3) == Fraction(1, 2)
 
 
-def test_negative_denominator():
-    """Tests the handling of negative denominators."""
+def test_case_sensitivity():
+    """Tests the correction/lack thereof of invalid inputs."""
+    assert Fraction(1.5, 2) == Fraction(2, 2)
+    assert Fraction("2.3", -4) == Fraction(2, 4)
     with pytest.raises(ValueError):
-        Fraction(1, -2)
+        Fraction("hallo", complex(3, 2))
+        Fraction([True], {"pytest"})
 
 
 def test_zero_denominator():
     """Tests the handling of zero denominators."""
     with pytest.raises(ValueError):
         Fraction(1, 0)
-
-
-def test_non_integer_input():
-    """Tests the handling of non-integer inputs."""
-    with pytest.raises(TypeError):
-        Fraction(1.5, 2)
 
 
 def test_string_output():
@@ -57,11 +53,17 @@ def test_string_output():
 
 def test_repr_output():
     """Tests the repr representation of the Fraction class."""
-    assert repr(Fraction(1, 2)) == "Fraction(1, 2)"
-    assert repr(Fraction(3, 4)) == "Fraction(3, 4)"
+    assert repr(Fraction(1, 2)) == "<Fraction(1, 2)>"
+    assert repr(Fraction(3, 4)) == "<Fraction(3, 4)>"
 
 
 def test_comparison_with_non_fraction():
     """Tests the comparison operators with non-Fraction types."""
     assert (Fraction(1, 2) == 0.5) is False
     assert (Fraction(1, 2) != 0.5) is True
+
+
+def test_readonly():
+    """Teests whether the properties (num, den) return the protected attributes (_num, _den)"""
+    assert Fraction(1, 2)._num == Fraction(1, 2).num
+    assert Fraction(1, 2)._den == Fraction(1, 2).den
