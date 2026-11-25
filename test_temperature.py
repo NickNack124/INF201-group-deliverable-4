@@ -3,6 +3,7 @@
 import pytest
 from temperature import Temperature
 
+#from deliverable_4_G4_2_answers.ipynb import Temperature
 
 class TestTemperature:
     """Functionality-testing the Temperature-class"""
