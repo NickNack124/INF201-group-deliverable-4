@@ -45,9 +45,7 @@ class Temperature:
             "F": (self._value - 32) * (5 / 9),
             "K": self._value - 273.15
         }
-        self._value = conversion[self.unit]
-        self._unit = "C"
-        return self._value
+        return conversion[self.unit]
 
     def to_fahrenheit(self) -> float:
         """Conversion from Kelvin/Celsius to Fahrenheit"""
@@ -56,9 +54,7 @@ class Temperature:
             "F": self._value,
             "K": ((self._value - 273.15) * (9 / 5)) + 32
         }
-        self._value = conversion[self.unit]
-        self._unit = "F"
-        return self._value
+        return conversion[self.unit]
 
     def to_kelvin(self) -> float:
         """Conversion from Fahrenheit/Celsius to Kelvin"""
@@ -67,9 +63,7 @@ class Temperature:
             "F": ((self._value - 32) * (5 / 9)) + 273.15,
             "K": self._value
         }
-        self._value = conversion[self.unit]
-        self._unit = "K"
-        return self._value
+        return conversion[self.unit]
 
     def convert_to(self, target_unit: str) -> Temperature:
         """Converts from one temperature unit to another"""
@@ -144,7 +138,7 @@ class Temperature:
     # Representation methods
     def __repr__(self) -> str:
         """A representation of the object when it is ran with no call"""
-        return f"<Temperature({self._value:.2f}, '{self._unit}')>"
+        return f"Temperature({self._value}, {self._unit})"
 
     def __str__(self) -> str:
         """A string representation of the object when it is in a string"""

@@ -53,8 +53,8 @@ def test_string_output():
 
 def test_repr_output():
     """Tests the repr representation of the Fraction class."""
-    assert repr(Fraction(1, 2)) == "<Fraction(1, 2)>"
-    assert repr(Fraction(3, 4)) == "<Fraction(3, 4)>"
+    assert repr(Fraction(1, 2)) == "Fraction(1, 2)"
+    assert repr(Fraction(3, 4)) == "Fraction(3, 4)"
 
 
 def test_comparison_with_non_fraction():
@@ -65,5 +65,8 @@ def test_comparison_with_non_fraction():
 
 def test_readonly():
     """Teests whether the properties (num, den) return the protected attributes (_num, _den)"""
-    assert Fraction(1, 2)._num == Fraction(1, 2).num
-    assert Fraction(1, 2)._den == Fraction(1, 2).den
+    fraction = Fraction(1, 2)
+    with pytest.raises(AttributeError):
+        fraction.num = 3
+    with pytest.raises(AttributeError):
+        fraction.den = 4

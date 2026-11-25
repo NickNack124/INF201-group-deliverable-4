@@ -1,5 +1,4 @@
 """A module for the fraction class"""
-from typing import Any
 
 
 class Fraction:
@@ -97,7 +96,7 @@ class Fraction:
 
     def __repr__(self):
         """Returns a string representation of the fraction for debugging"""
-        return f"<Fraction({self._num}, {self._den})>"
+        return f"Fraction({self._num}, {self._den})"
 
     # Properties
     @property
